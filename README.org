@@ -1,0 +1,20 @@
+* Org mode Goban
+
+A Goban diagramming tool for Emacs Org-mode.
+
+Early days, but lets you do stuff like this :
+
+#+begin_src goban :file amazing.svg
+$$B
+$$ . . . . . . . . |
+$$ . . . . . . O . |
+$$ . . . . . . 8 6 |
+$$ . . . . 4 O 2 5 |
+$$ . . X 10 9 3 1 7 |
+$$ . . . . . . . . |
+$$ ----------------+
+#+end_src
+
+#+RESULTS:
+[[file:amazing.svg]]
+
