@@ -22,5 +22,5 @@ $$ ------------------+
 Which results in this
 
 #+ATTR_HTML: title="Goban"
-[[file:https://github.com/FungusHumungus/ob-goban/blob/master/amazing.svg]]
+[[file:https://raw.githubusercontent.com/FungusHumungus/ob-goban/master/amazing.svg]]
 
