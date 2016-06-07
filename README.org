@@ -21,6 +21,6 @@ $$ ------------------+
 
 Which results in this
 
-[[file:amazing.svg]]
+#+ATTR_HTML: title="Goban"
+[[file:https://raw.githubusercontent.com/FungusHumungus/ob-goban/master/amazing.svg]]
 
-Note.. TODO Work out how to show that svg on github...
