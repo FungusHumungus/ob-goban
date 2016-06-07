@@ -55,12 +55,17 @@
 (defun org-babel-expand-body:goban (body params &optional processed-params)
   "Expand BODY according to PARAMS, return the expanded body."
   ;;(require 'inf-goban)
+  (print params)
   (let ((vars (nth 1 (or processed-params (org-babel-process-params params)))))
     (concat
      (mapconcat ;; define any variables
       (lambda (pair)
-        (format "%s=%S"
-                (car pair) (org-babel-goban-var-to-goban (cdr pair))))
+        (if (consp pair)
+            (format "%s=%S"
+                    (car pair)
+                    (org-babel-goban-var-to-goban (cdr pair)))
+          (format "%s="
+                  pair)))
       vars "\n") "\n" body "\n")))
 
 
@@ -230,6 +235,7 @@ This function is called by `org-babel-execute-src-block'"
 (defun org-babel-goban-var-to-goban (var)
   "Convert an elisp var into a string of goban source code
 specifying a var of the same value."
+  (message "org-babel-goban-var-to-goban")
   (format "%S" var))
 
 (defun org-babel-goban-table-or-string (results)
