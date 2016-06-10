@@ -152,12 +152,16 @@ xmlns='http://www.w3.org/2000/svg'>%s</svg>"
           (/ goban-grid-size 2)
           colour))
 
+(defun goban-clear-background (col row)
+  "Clears the background of the point so the marker is clearer."
+  (format "<circle cx='%d' cy='%d' r='%d' stroke='white' fill='white' />"
+          (+ (goban-board-size col) goban-margins)
+          (+ (goban-board-size row) goban-margins)
+          (/ goban-grid-size 2)))
+
 (defun goban-markers (col row letter)
   (concat
-   (format "<circle cx='%d' cy='%d' r='%d' stroke='white' fill='white' />"
-           (+ (goban-board-size col) goban-margins)
-           (+ (goban-board-size row) goban-margins)
-           (/ goban-grid-size 2))
+   (goban-clear-background col row)
    (format "<text x='%d' y='%d' font-family='verdana' font-size='24'>%s</text>"
            (+ (goban-board-size col) (- goban-margins 8))
            (+ (goban-board-size row) (+ goban-margins 8))
@@ -186,6 +190,24 @@ xmlns='http://www.w3.org/2000/svg'>%s</svg>"
              (goban-other-colour colour)
              number))))
 
+(defun goban-triangle (col row colour filled)
+  (format "<polygon points='%d %d, %d %d, %d %d' stroke='%s' fill='%s' />"
+          (+ (goban-board-size col) (- goban-margins 8))
+          (+ (goban-board-size row) (+ goban-margins 6))
+          (+ (goban-board-size col) (+ goban-margins 8))
+          (+ (goban-board-size row) (+ goban-margins 6))
+          (+ (goban-board-size col) (+ goban-margins 0))
+          (+ (goban-board-size row) (- goban-margins 10))
+          colour
+          (if filled colour (goban-other-colour colour))))
+
+
+(defun goban-star-point (col row)
+  "Draw the star point"
+  (format "<rect x='%d' y='%d' width='6' height='6' />"
+          (+ (goban-board-size col) (- goban-margins 3))
+          (+ (goban-board-size row) (- goban-margins 3))))
+
 (defun goban-stones (board)
   "Draw the stones and other markers."
   (mapconcat
@@ -193,11 +215,12 @@ xmlns='http://www.w3.org/2000/svg'>%s</svg>"
      (mapconcat
       (lambda (row)
         (let ((at-pos (nth col (nth row (goban-board-board board)))))
+          (setf case-fold-search nil)
 
           (concat
-           (cond ((string-match "X" at-pos)
+           (cond ((string-match "[XY]" at-pos)
                   (goban-stone col row 'black))
-                 ((string-match "O" at-pos)
+                 ((string-match "[OQ]" at-pos)
                   (goban-stone col row 'white))
                  ((string-match "[a-z]" at-pos)
                   (goban-markers col row (match-string 0 at-pos)))
@@ -205,7 +228,20 @@ xmlns='http://www.w3.org/2000/svg'>%s</svg>"
                   (goban-numbered-stone col row
                                         (goban-board-start-colour board)
                                         (string-to-number
-                                         (match-string 0 at-pos))))))))
+                                         (match-string 0 at-pos))))
+                 ((string-match "T" at-pos)
+                  (concat (goban-clear-background col row)
+                          (goban-triangle col row 'black t)))
+                 ((string-match "," at-pos)
+                  (goban-star-point col row)))
+
+           (cond ((string-match "Q" at-pos)
+                  (goban-triangle col row 'black nil))
+                 ((string-match "Y" at-pos)
+                  (goban-triangle col row 'white nil)))
+
+
+           )))
 
       (number-sequence 0 (1- (goban-num-rows board))) ""))
    (number-sequence 0 (1- (goban-num-cols board)))
