@@ -192,12 +192,12 @@ xmlns='http://www.w3.org/2000/svg'>%s</svg>"
 
 (defun goban-triangle (col row colour filled)
   (format "<polygon points='%d %d, %d %d, %d %d' stroke='%s' fill='%s' />"
-          (+ (goban-board-size col) (- goban-margins 8))
-          (+ (goban-board-size row) (+ goban-margins 6))
-          (+ (goban-board-size col) (+ goban-margins 8))
-          (+ (goban-board-size row) (+ goban-margins 6))
+          (+ (goban-board-size col) (- goban-margins 6))
+          (+ (goban-board-size row) (+ goban-margins 4))
+          (+ (goban-board-size col) (+ goban-margins 6))
+          (+ (goban-board-size row) (+ goban-margins 4))
           (+ (goban-board-size col) (+ goban-margins 0))
-          (+ (goban-board-size row) (- goban-margins 10))
+          (+ (goban-board-size row) (- goban-margins 8))
           colour
           (if filled colour (goban-other-colour colour))))
 
@@ -231,7 +231,7 @@ xmlns='http://www.w3.org/2000/svg'>%s</svg>"
                                          (match-string 0 at-pos))))
                  ((string-match "T" at-pos)
                   (concat (goban-clear-background col row)
-                          (goban-triangle col row 'black t)))
+                          (goban-triangle col row 'black nil)))
                  ((string-match "," at-pos)
                   (goban-star-point col row)))
 
